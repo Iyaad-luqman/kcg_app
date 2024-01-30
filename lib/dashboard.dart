@@ -47,7 +47,7 @@ Widget cardWidget(String title, String imagePath,String route) {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset(imagePath), // display the image
+                Image.asset(imagePath, width: 70, height: 70,), // display the image
                 Text(
                   title,
                   style: TextStyle(
@@ -105,8 +105,8 @@ Widget build(BuildContext context) {
                       itemCount: 6, // number of items
                       itemBuilder: (context, index) {
                         // Define your data
-                        List<String> icons = ['images/cap.png' ,' ', ' ' ,'' ,'' , ''];
-                        List<String> titles = ['Attendance', 'Fees', 'Marks', 'Settings' 'Library', 'FeedBack', 'Receipts'];
+                        List<String> icons = ['images/attendance.png' ,'images/fees.png', 'images/marks.png' ,'images/library.png' ,'images/feedback.png' , 'images/reciept.png'];
+                        List<String> titles = ['Attendance', 'Fees', 'Marks', 'Library', 'FeedBack', 'Receipts'];
                         List<String> routes = ['/home', '/search', '/profile', '/settings' ,'' ,''];
 
                         // Pass the data to the cardWidget function
