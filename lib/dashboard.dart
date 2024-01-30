@@ -89,12 +89,27 @@ Widget build(BuildContext context) {
                     height: 20,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(30.0),
+                    padding: const EdgeInsets.fromLTRB(30, 30, 0, 5),
                     child: Text(
                       'Welcome, Student',
-                      style: TextStyle(fontSize: 20, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 23, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
                     ),
                   ),
+                   Row(
+                     children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                       Image.asset('images/cap.png', width: 40, height: 40,),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10,0,0,0),
+                        child: Text(
+                          '1st Semester',
+                          style: TextStyle(fontSize: 16, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
+                        ),
+                                         ),
+                     ],
+                   ),
                   // Add a GridView.builder
                   Container(
                     height: hlen * 0.7, // specify the height of the GridView
