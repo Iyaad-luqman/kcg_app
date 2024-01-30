@@ -2,6 +2,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:kcg_app/attendance.dart';
+import 'package:kcg_app/feedback.dart';
+import 'package:kcg_app/fees.dart';
+import 'package:kcg_app/library.dart';
+import 'package:kcg_app/marks.dart';
+import 'package:kcg_app/receipts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -25,10 +31,10 @@ class _DashboardState extends State<Dashboard> {
       _selectedIndex = index;
     });
   }
-Widget cardWidget(String title, String imagePath,String route) {
+Widget cardWidget(String title, String imagePath, Widget routeBuilder) {
   return InkWell(
     onTap: () {
-      Navigator.pushNamed(context, route);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => routeBuilder));
     },
     child: Card(
       color: Color.fromARGB(255,17, 5, 44).withOpacity(0.2), // make the Card semi-transparent
@@ -122,7 +128,7 @@ Widget build(BuildContext context) {
                         // Define your data
                         List<String> icons = ['images/attendance.png' ,'images/fees.png', 'images/marks.png' ,'images/library.png' ,'images/feedback.png' , 'images/reciept.png'];
                         List<String> titles = ['Attendance', 'Fees', 'Marks', 'Library', 'FeedBack', 'Receipts'];
-                        List<String> routes = ['/home', '/search', '/profile', '/settings' ,'' ,''];
+                        List<Widget> routes = [Attendance(), Fees(), Marks(), Library(), FeedBack(), Receipts()];
 
                         // Pass the data to the cardWidget function
                         return cardWidget(
