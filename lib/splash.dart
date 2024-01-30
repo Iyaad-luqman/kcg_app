@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kcg_app/dashboard.dart';
 import 'package:kcg_app/login.dart';
 
 
@@ -48,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(builder: (context) => Dashboard()),
                     );
                 },
                 child: Text(
