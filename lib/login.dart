@@ -1,15 +1,26 @@
 // ignore_for_file: prefer_const_constructors
 
+
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:kcg_app/dashboard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _regsiter_controller = TextEditingController();
+
   final TextEditingController _dob_controller = TextEditingController();
 
-Future<String?> login(String username, String password) async {
+Future login(String username, String password) async {
+   final prefs = await SharedPreferences.getInstance();
   final url = 'http://studentlogin.kcgcollege.ac.in';
   final headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
@@ -28,12 +39,46 @@ Future<String?> login(String username, String password) async {
   
   final response2 = await http.get(Uri.parse(url + redirectUrl!), headers: {...headers, 'Cookie': 'ASP.NET_SessionId=$sessionId'});
   
-  final name = RegExp(r'<span id="lblsname" class="ddl-lbl" style="">([^<]+)</span>').firstMatch(response2.body)?.group(1);
-  
-  debugPrint('NAMMEEE -----------------> >>> > > > > > >> > >  > > > $name');
-  return name;
-}
+  await prefs.setString('sessionId', sessionId!);
+  await prefs.setString('redirectUrl', redirectUrl);
 
+  final name = RegExp(r'<span id="lblsname" class="ddl-lbl" style="">([^<]+)</span>').firstMatch(response2.body)?.group(1);
+  await prefs.setString('name', name!);
+  final regno = RegExp(r'<span id="Label15" class="ddl-lbl" style="">([^<]+)</span>').firstMatch(response2.body)?.group(1);
+  await prefs.setString('name', regno!);
+  final depno = RegExp(r'<span id="lbldegree" class="ddl-lbl" style="">([^<]+)</span>').firstMatch(response2.body)?.group(1);
+  await prefs.setString('name', depno!);
+  final semno = RegExp(r'<span id="lblsem" class="ddl-lbl" style="">([^<]+)</span>').firstMatch(response2.body)?.group(1);
+  await prefs.setString('name', semno!);
+  final batchyr = RegExp(r'<span id="lblyear" class="ddl-lbl" style="">([^<]+)</span>').firstMatch(response2.body)?.group(1);
+  await prefs.setString('name', batchyr!);
+  
+
+  debugPrint('NAMMEEE -----------------> >>> > > > > > >> > >  > > > $name');
+
+  if (regno != username ){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Login Failed'),
+          content: Text('Login Details Incorrect'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  } else {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+  }
+
+}
 
   @override
   Widget build(BuildContext context) {
