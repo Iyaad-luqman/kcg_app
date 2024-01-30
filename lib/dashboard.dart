@@ -143,28 +143,75 @@ Widget build(BuildContext context) {
           left: 0,
           right: 0,
           child: ClipRRect(
+            // borderRadius: BorderRadius.only(
+            //   topLeft: Radius.circular(30.0),
+            //   topRight: Radius.circular(30.0),
+            // ),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 90, sigmaY: 130),
               child: BottomNavigationBar(
-                backgroundColor: Color.fromARGB(255, 31, 0, 102).withOpacity(0), // make the BottomNavigationBar semi-transparent
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.search),
-                    label: 'Search',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: 'Profile',
+  backgroundColor: Color.fromARGB(255, 31, 0, 102).withOpacity(0), // make the BottomNavigationBar semi-transparent
+  items: <BottomNavigationBarItem>[
+    BottomNavigationBarItem(
+      icon: Container(
+        decoration: _selectedIndex == 0
+            ? BoxDecoration(
+                boxShadow: [
+                 BoxShadow(
+                    color: Colors.blue,
+
+                    blurRadius: 20.0, // adjust the blur radius
+                    spreadRadius: 2.0, // adjust the spread radius
                   ),
                 ],
-                currentIndex: _selectedIndex,
-                selectedItemColor: Colors.amber[800],
-                onTap: _onItemTapped,
-              ),
+              )
+            : null,
+        child: Image.asset('images/home.png', height: 30, width: 30,), // replace with your custom icon
+      ),
+      label: '',
+    ),
+    BottomNavigationBarItem(
+      icon: Container(
+        decoration: _selectedIndex == 1
+            ? BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue,
+
+                    blurRadius: 20.0, // adjust the blur radius
+                    spreadRadius: 2.0, // adjust the spread radius
+                  ),
+                ],
+              )
+            : null,
+        child: Image.asset('images/timetable.png', height: 30, width: 30,), // replace with your custom icon
+      ),
+      label: '',
+    ),
+    BottomNavigationBarItem(
+      icon: Container(
+        decoration: _selectedIndex == 2
+            ? BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue,
+                    blurRadius: 20.0, // adjust the blur radius
+                    spreadRadius: 2.0, // adjust the spread radius
+                  ),
+                ],
+              )
+            : null,
+        child: Image.asset('images/profile.png', height: 30, width: 30,), // replace with your custom icon
+      ),
+      label: '',
+    ),
+  ],
+  currentIndex: _selectedIndex,
+  selectedItemColor: Colors.amber[800],
+  onTap: _onItemTapped,
+  showSelectedLabels: false, // do not show labels for selected items
+  showUnselectedLabels: false, // do not show labels for unselected items
+),
             ),
           ),
         ),
