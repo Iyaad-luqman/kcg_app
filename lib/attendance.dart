@@ -32,30 +32,9 @@ class _AttendanceState extends State<Attendance> {
 Widget cardWidget(String title,double percentage ,Widget routeBuilder) {
   return InkWell(
     onTap: () {
-      Navigator.push(context, PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => routeBuilder,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          var begin = Offset(0.0, 0.0);
-          var end = Offset(-1.0, 0.0);
-          var curve = Curves.ease;
 
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-          var beginNewPage = Offset(1.0, 0.0);
-          var endNewPage = Offset.zero;
-          var tweenNewPage = Tween(begin: beginNewPage, end: endNewPage).chain(CurveTween(curve: curve));
-
-          return Stack(
-            children: <Widget>[
-              SlideTransition(
-                position: animation.drive(tweenNewPage),
-                child: routeBuilder,
-              ),
-            ],
-          );
-        },
-      ));
-    },
+  Navigator.push(context, MaterialPageRoute(builder: (context) => routeBuilder));
+},
     child: Container(
       width: 300, // adjust the width as needed
       height: 100,
