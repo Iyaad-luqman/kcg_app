@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:kcg_app/attendance_display.dart';
 import 'package:kcg_app/dashboard.dart';
 import 'package:kcg_app/circ.dart';
 
@@ -28,8 +29,36 @@ class _AttendanceState extends State<Attendance> {
       }
     });
   }
-Widget cardWidget(String title,double percentage) {
+Widget cardWidget(String title,double percentage ,Widget routeBuilder) {
   return InkWell(
+    onTap: () {
+      Navigator.push(context, PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => routeBuilder,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = Offset(0.0, 0.0);
+          var end = Offset(-1.0, 0.0);
+          var curve = Curves.ease;
+
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+          var beginNewPage = Offset(1.0, 0.0);
+          var endNewPage = Offset.zero;
+          var tweenNewPage = Tween(begin: beginNewPage, end: endNewPage).chain(CurveTween(curve: curve));
+
+          return Stack(
+            children: <Widget>[
+              SlideTransition(
+                position: animation.drive(tweenNewPage),
+                child: routeBuilder,
+              ),
+            ],
+          );
+        },
+      ));
+    },
+    child: Container(
+      width: 300, // adjust the width as needed
+      height: 100,
 // Set the height as needed
       child: Card(
     
@@ -148,7 +177,7 @@ Widget cardWidget(String title,double percentage) {
   ),
       ),
     ),
-  
+    ),
   );
 }
 @override
@@ -271,13 +300,13 @@ Widget build(BuildContext context) {
                         // Define your data
                         List<double> percentage = [90, 80, 70, 20];
                         List<String> titles = ['Engineering Chemistry/Labrotory', 'CAT 2', 'CAT 3', 'CAT 4'];
-                        // List<Widget> routes = [MarksDisplay(exam_name: 'CAT 1'), MarksDisplay(exam_name: 'CAT 2'), MarksDisplay(exam_name: 'CAT 3'), MarksDisplay(exam_name: 'CAT 4')];
+                        List<Widget> routes = [AttendanceDisplay(index: 1), AttendanceDisplay(index: 2), AttendanceDisplay(index: 3), AttendanceDisplay(index: 4)];
 
                         // Pass the data to the cardWidget function
                         return cardWidget(
                           titles[index],
                           percentage[index],
-                          // routes[index],
+                          routes[index],
                         );
                       },
                     ),
