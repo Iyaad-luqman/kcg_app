@@ -1,21 +1,20 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
-import 'package:kcg_app/dashboard.dart';
 import 'dart:ui';
 
-import 'package:kcg_app/marks_display.dart';
+import 'package:kcg_app/dashboard.dart';
 
+class MarksDisplay extends StatefulWidget {
+  final String exam_name;
 
-class Marks extends StatefulWidget {
+  MarksDisplay({required this.exam_name});
+  
   @override
-  _MarksState createState() => _MarksState();
+  _MarksDisplayState createState() => _MarksDisplayState();
 }
 
-class _MarksState extends State<Marks> {
+class _MarksDisplayState extends State<MarksDisplay> {
 
-    int _selectedIndex = -1;
-
+  int _selectedIndex = -1;
 
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Home Page'),
@@ -34,92 +33,130 @@ class _MarksState extends State<Marks> {
   }
 Widget cardWidget(String title,double percentage, Widget routeBuilder) {
   return InkWell(
-     onTap: () {
-      Navigator.push(context, PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => routeBuilder,
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          var begin = Offset(0.0, 0.0);
-          var end = Offset(-1.0, 0.0);
-          var curve = Curves.ease;
-
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-          var beginNewPage = Offset(1.0, 0.0);
-          var endNewPage = Offset.zero;
-          var tweenNewPage = Tween(begin: beginNewPage, end: endNewPage).chain(CurveTween(curve: curve));
-
-          return Stack(
-            children: <Widget>[
-              SlideTransition(
-                position: animation.drive(tweenNewPage),
-                child: routeBuilder,
-              ),
-            ],
-          );
-        },
-      ));
-    },
-  
-  child: Card(
-
-    color: Color.fromARGB(255,17, 5, 44).withOpacity(0.2), // make the Card semi-transparent
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(30.0),
-    ),
-    elevation: 7,
-    margin: EdgeInsets.all(20),
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(30.0),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 70, sigmaY: 10),
-        child: Container(
+// Set the height as needed
+      child: Card(
+    
+      color: Color.fromARGB(255,17, 5, 44).withOpacity(0.2), // make the Card semi-transparent
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      elevation: 7,
+      margin: EdgeInsets.all(25),
+      child: ClipRRect(
+  borderRadius: BorderRadius.circular(30.0),
+  child: ClipRect(
+    child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 70, sigmaY: 10),
+      child: Container(
+  alignment: Alignment.center,
+  color: Color.fromARGB(5,40, 43, 91).withOpacity(0.1),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: <Widget>[
+      Padding(
+        padding: EdgeInsets.all(20),
+        child: Stack(
           alignment: Alignment.center,
-          color: Color.fromARGB(5,40, 43, 91).withOpacity(0.1),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 20), // adjust the value as needed
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      fontFamily: 'Manrope',
-                      color: Color.fromARGB(255, 94, 183, 255), // make the text blue
-                      fontSize: 24, // make the text a little big
-                    ),
+          children: <Widget>[
+            Container(
+              width: 60, // adjust the width as needed
+              height: 60, // adjust the height as needed
+              child: CircularProgressIndicator(
+                value: percentage / 100, // calculate the progress
+                backgroundColor: Colors.grey,
+                valueColor: AlwaysStoppedAnimation(
+                  percentage < 50 ? Colors.red : Color.fromARGB(255, 0, 162, 255), // set the color based on the percentage
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  '${percentage.toStringAsFixed(0)}', // display the percentage
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 18, // adjust the font size as needed
+                    fontWeight: FontWeight.bold,
                   ),
+                  
+                  
                 ),
-              ),
-              Text(
-                '$percentage%', // display the percentage
-                style: TextStyle(
-                  fontFamily: 'QuickSand',
-                  fontSize: 32, // make the text bigger
-                ),
-              ),
-              SizedBox(height: 10), // add some spacing
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  height: 3,
-                  width: 120,
-                  child: LinearProgressIndicator(
-                    value: percentage / 100, // calculate the progress
-                    backgroundColor: Colors.grey,
-                    valueColor: AlwaysStoppedAnimation(
-                      percentage < 50 ? Colors.red : Color.fromARGB(255, 0, 162, 255), // set the color based on the percentage
-                    ),
+                Text(
+                  '/100', // display the percentage
+                  style: TextStyle(
+                    fontFamily: 'Manrope',
+                    fontSize: 8, // adjust the font size as needed
+                    fontWeight: FontWeight.bold,
                   ),
+                  
+                  
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ),
       ),
-    ),
+      Expanded(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontFamily: 'Manrope',
+                  color: Color.fromARGB(255, 94, 183, 255), // make the text blue
+                  fontSize: 21, // make the text a little big
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Text(
+                  percentage < 50 ? 'FAIL' : 'PASS',
+                  style: TextStyle(
+                    fontFamily: 'QuickSand',
+                    fontSize: 13, // make the text smaller
+                  ),
+                ),
+                SizedBox(
+                  width: 5,),
+                percentage <= 50
+                  ? Icon(
+                      Icons.cancel,
+                      color: Colors.red,
+                      size: 15,
+                    )
+                  : Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                      size: 15,
+                    ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      // Padding(
+      //   padding: EdgeInsets.all(20),
+      //   child: Image.asset(
+      //     percentage < 50 ? 'images/fail.png' : 'assetspass.png', // set the image based on the percentage
+      //   ),
+      // ),
+            
+              ],
+            ),
+          ),
+        ),
   ),
+      ),
+    ),
+  
   );
 }
 @override
@@ -135,7 +172,7 @@ Widget build(BuildContext context) {
     },
   ),
   title: Center(
-    child: Text('Exam Results'), // replace 'Marks' with your desired title
+    child: Text('${widget.exam_name} Results'), // replace 'Marks' with your desired title
   ),
   actions: [
     IconButton(
@@ -180,8 +217,8 @@ Widget build(BuildContext context) {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 0, 0, 5),
                     child: Text(
-                      'Choose the Exam:',
-                      style: TextStyle(fontSize: 23, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
+                      '${widget.exam_name} : ',
+                      style: TextStyle(fontSize: 36, fontFamily: 'ManRope', fontWeight: FontWeight.w300),
                     ),
                   ),
                    Row(
@@ -193,7 +230,7 @@ Widget build(BuildContext context) {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10,0,0,0),
                         child: Text(
-                          'Iyaad Luqman K ',
+                          '1st Semester ',
                           style: TextStyle(fontSize: 16, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
                         ),
                                          ),
@@ -204,13 +241,14 @@ Widget build(BuildContext context) {
                     height: hlen * 0.7, // specify the height of the GridView
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, // number of items per row
+                        crossAxisCount: 1, // number of items per row
+                        childAspectRatio: 2.8, // item width and height ratio
                       ),
                       itemCount: 4, // number of items
                       itemBuilder: (context, index) {
                         // Define your data
                         List<double> percentage = [90, 80, 70, 20];
-                        List<String> titles = ['CAT 1', 'CAT 2', 'CAT 3', 'CAT 4'];
+                        List<String> titles = ['Engineering Chemistry/Labrotory', 'CAT 2', 'CAT 3', 'CAT 4'];
                         List<Widget> routes = [MarksDisplay(exam_name: 'CAT 1'), MarksDisplay(exam_name: 'CAT 2'), MarksDisplay(exam_name: 'CAT 3'), MarksDisplay(exam_name: 'CAT 4')];
 
                         // Pass the data to the cardWidget function
