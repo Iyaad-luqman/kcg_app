@@ -195,7 +195,7 @@ class _MarksState extends State<Marks> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        title,
+                        '$title:',
                         style: TextStyle(
                           fontFamily: 'Manrope',
                           color: Color.fromARGB(
@@ -254,7 +254,7 @@ class _MarksState extends State<Marks> {
           List<dynamic>? data = jsonData != null ? jsonDecode(jsonData) : null;
           List<String> titles = data!.map((semesterData) {
             String fullTitle = semesterData[0] as String;
-            String modifiedTitle = fullTitle.replaceAll('Semester', 'Sem') + ':';
+            String modifiedTitle = fullTitle.replaceAll('Semester', 'Sem');
             return modifiedTitle;
           }).toList();
 
@@ -281,12 +281,9 @@ class _MarksState extends State<Marks> {
     }
   }).toList();
 
-          List<Widget> routes = [
-            MarksDisplay(exam_name: 'CAT 1'),
-            MarksDisplay(exam_name: 'CAT 2'),
-            MarksDisplay(exam_name: 'CAT 3'),
-            MarksDisplay(exam_name: 'CAT 4')
-          ];
+List<Widget> routes = titles.map((title) {
+  return MarksDisplay(exam_name: title);
+}).toList();
 
           // Return your widget here using the data
           return Scaffold(
