@@ -1,7 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+
 import 'package:kcg_app/dashboard.dart';
+import 'package:kcg_app/circ.dart';
+
 
 class AttendanceDisplay extends StatefulWidget {
   @override
@@ -30,7 +33,7 @@ class _AttendanceDisplayState extends State<AttendanceDisplay> {
       }
     });
   }
-Widget cardWidget(String title,double percentage) {
+Widget cardWidget(String title,int percentage) {
   return InkWell(
   
   child: Card(
@@ -60,13 +63,13 @@ Widget cardWidget(String title,double percentage) {
                     style: TextStyle(
                       fontFamily: 'Manrope',
                       color: Color.fromARGB(255, 94, 183, 255), // make the text blue
-                      fontSize: 24, // make the text a little big
+                      fontSize: 14, // make the text a little big
                     ),
                   ),
                 ),
               ),
               Text(
-                '$percentage%', // display the percentage
+                '$percentage', // display the percentage
                 style: TextStyle(
                   fontFamily: 'QuickSand',
                   fontSize: 32, // make the text bigger
@@ -82,7 +85,7 @@ Widget cardWidget(String title,double percentage) {
                     value: percentage / 100, // calculate the progress
                     backgroundColor: Colors.grey,
                     valueColor: AlwaysStoppedAnimation(
-                      percentage < 50 ? Colors.red : Color.fromARGB(255, 0, 162, 255), // set the color based on the percentage
+                      percentage < 50 ? Color.fromARGB(255, 0, 162, 255) : Color.fromARGB(255, 0, 162, 255), // set the color based on the percentage
                     ),
                   ),
                 ),
@@ -99,6 +102,7 @@ Widget cardWidget(String title,double percentage) {
 Widget build(BuildContext context) {
   double hlen = MediaQuery.of(context).size.height;
   double wlen = MediaQuery.of(context).size.width;
+    double percentage  = 89.0;
   return Scaffold(
     appBar: AppBar(
   leading: IconButton(
@@ -150,11 +154,41 @@ Widget build(BuildContext context) {
                   SizedBox(
                     height: 20,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 0, 5),
-                    child: Text(
-                      'Choose the Exam:',
-                      style: TextStyle(fontSize: 23, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
+
+                  Center(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        GradientCircularProgressIndicator(
+                            key: Key('myProgressIndicator'),
+                          value: percentage / 100, // calculate the progress
+                          strokeWidth: 7.0,
+                          radius: 90.0,
+                          gradient1: LinearGradient(
+                            colors: [Colors.white,Colors.white],
+                          ),
+                          gradient2: LinearGradient(
+                            colors: [const Color.fromARGB(255, 191, 54, 100), Color.fromARGB(255,108, 46, 107), Color.fromARGB(255, 35, 38, 112)],
+                          ),
+                        ),
+                        Text(
+                          '${(percentage).toStringAsFixed(0)}%', // display the percentage191, 54, 100)
+                          style: TextStyle(
+                            fontSize: 24, // adjust the font size as needed
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 0, 30, 5),
+                      child: Text(
+                        'Overall Attendance',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 31, fontFamily: 'ManRope', fontWeight: FontWeight.w300),
+                      ),
                     ),
                   ),
                    Row(
@@ -166,12 +200,78 @@ Widget build(BuildContext context) {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10,0,0,0),
                         child: Text(
-                          'Iyaad Luqman K ',
+                          'Engineering Physics ',
                           style: TextStyle(fontSize: 16, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
                         ),
                                          ),
                      ],
                    ),
+                    
+                  Card(
+
+    color: Color.fromARGB(255,17, 5, 44).withOpacity(0.2), // make the Card semi-transparent
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(15.0),
+    ),
+    elevation: 7,
+    margin: EdgeInsets.all(20),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(15.0),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 70, sigmaY: 10),
+        child: Container(
+          alignment: Alignment.center,
+          color: Color.fromARGB(5,40, 43, 91).withOpacity(0.1),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+
+              Row(
+                children: [
+                                Padding(
+                padding: EdgeInsets.fromLTRB(20, 10, 0, 0), // adjust the value as needed
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Attendance Status:',
+                    style: TextStyle(
+                      fontFamily: 'Manrope',
+                      color: Color.fromARGB(255, 94, 183, 255), // make the text blue
+                      fontSize: 15, // make the text a little big
+                    ),
+                  ),
+                ),
+              ),
+                  SizedBox(width: 10), // add some spacing
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    child: percentage > 75 ? Icon(Icons.check_circle, color: Colors.green, size: 20,) :  Icon(Icons.cancel, color: Colors.red, size: 20,),
+                  ),
+                ],
+              ), 
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 0, 0), // adjust the value as needed
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'No. of leaves you can take in this sem: 7', // display the percentage
+                    style: TextStyle(
+                      fontFamily: 'QuickSand',
+                      fontSize: 15, // make the text bigger
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 10), // add some spacing
+
+            ],
+          ),
+        ),
+      ),
+    ),
+  ),
+
                   // Add a GridView.builder
                   Container(
                     height: hlen * 0.7, // specify the height of the GridView
@@ -182,8 +282,8 @@ Widget build(BuildContext context) {
                       itemCount: 4, // number of items
                       itemBuilder: (context, index) {
                         // Define your data
-                        List<double> percentage = [90, 80, 70, 20];
-                        List<String> titles = ['CAT 1', 'CAT 2', 'CAT 3', 'CAT 4'];
+                        List<int> percentage = [90, 80, 70, 20];
+                        List<String> titles = ['Total Classes: ', 'Attended Classes: ', 'Missed Classes:', 'Remaining Classes: '];
 
                         // Pass the data to the cardWidget function
                         return cardWidget(
