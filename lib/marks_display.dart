@@ -31,7 +31,7 @@ class _MarksDisplayState extends State<MarksDisplay> {
       }
     });
   }
-Widget cardWidget(String title,double percentage, Widget routeBuilder) {
+Widget cardWidget(String title,double percentage) {
   return InkWell(
 // Set the height as needed
       child: Card(
@@ -41,7 +41,7 @@ Widget cardWidget(String title,double percentage, Widget routeBuilder) {
         borderRadius: BorderRadius.circular(30.0),
       ),
       elevation: 7,
-      margin: EdgeInsets.all(25),
+      margin: EdgeInsets.fromLTRB(25, 25, 25, 0),
       child: ClipRRect(
   borderRadius: BorderRadius.circular(30.0),
   child: ClipRect(
@@ -242,20 +242,18 @@ Widget build(BuildContext context) {
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 1, // number of items per row
-                        childAspectRatio: 2.8, // item width and height ratio
+                        childAspectRatio: 3.3, //// item width and height ratio
                       ),
                       itemCount: 4, // number of items
                       itemBuilder: (context, index) {
                         // Define your data
                         List<double> percentage = [90, 80, 70, 20];
                         List<String> titles = ['Engineering Chemistry/Labrotory', 'CAT 2', 'CAT 3', 'CAT 4'];
-                        List<Widget> routes = [MarksDisplay(exam_name: 'CAT 1'), MarksDisplay(exam_name: 'CAT 2'), MarksDisplay(exam_name: 'CAT 3'), MarksDisplay(exam_name: 'CAT 4')];
 
                         // Pass the data to the cardWidget function
                         return cardWidget(
                           titles[index],
                           percentage[index],
-                          routes[index],
                         );
                       },
                     ),
