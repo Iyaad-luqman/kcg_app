@@ -62,7 +62,7 @@ Widget cardWidget(String title,double percentage) {
                 value: percentage / 100, // calculate the progress
                 backgroundColor: Colors.grey,
                 valueColor: AlwaysStoppedAnimation(
-                  percentage < 50 ? Colors.red : Color.fromARGB(255, 0, 162, 255), // set the color based on the percentage
+                  percentage < 75 ? Colors.red : Color.fromARGB(255, 0, 162, 255), // set the color based on the percentage
                 ),
               ),
             ),
@@ -115,15 +115,15 @@ Widget cardWidget(String title,double percentage) {
             Row(
               children: [
                 Text(
-                  percentage < 50 ? 'FAIL' : 'PASS',
+                 'Total: 85  |  Attended: 75  |  Missed: 10',
                   style: TextStyle(
                     fontFamily: 'QuickSand',
-                    fontSize: 13, // make the text smaller
+                    fontSize: 12, // make the text smaller
                   ),
                 ),
                 SizedBox(
                   width: 5,),
-                percentage <= 50
+                percentage <= 75
                   ? Icon(
                       Icons.cancel,
                       color: Colors.red,
