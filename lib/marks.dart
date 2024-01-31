@@ -3,9 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:kcg_app/dashboard.dart';
 import 'dart:ui';
+import 'package:http/http.dart' as http;
 
+import 'dart:convert';
+import 'package:html/parser.dart' as parser;
+import 'package:html/dom.dart' as dom;
 import 'package:kcg_app/marks_display.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Marks extends StatefulWidget {
   @override
@@ -15,7 +19,28 @@ class Marks extends StatefulWidget {
 class _MarksState extends State<Marks> {
 
     int _selectedIndex = -1;
+ Future<List<Map<String, List<Map<String, String>>>>>? _marksFuture;
 
+Future<String> _getSessionId() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String sessionId = prefs.getString('sessionId') ?? '';
+  return sessionId;
+}
+
+Future<String> _getRedirectUrl() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String redirectUrl = prefs.getString('redirectUrl') ?? '';
+  return redirectUrl;
+}
+
+  void initState() {
+    super.initState();
+    _getSessionId().then((sessionId) {
+      _getRedirectUrl().then((redirectUrl) {
+        _marksFuture = fetchMarks(redirectUrl, sessionId);
+      });
+    });
+  }
 
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Home Page'),
@@ -32,6 +57,69 @@ class _MarksState extends State<Marks> {
       }
     });
   }
+
+Future<List<Map<String, List<Map<String, String>>>>> fetchMarks(String redirectUrl, String sessionId) async {
+  final url = 'http://192.168.1.5:5000/index.html?app=$redirectUrl&Type=$sessionId';
+  final headers = {
+    'Host' : '192.168.1.5:5000',
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Cookie': 'ASP.NET_SessionId=$sessionId',
+  };
+  final body = '__EVENTTARGET=&__EVENTARGUMENT=&__VIEWSTATE=%2FwEPDwUJODQwNDExMTAzD2QWAgIBD2QWHgIDDw8WAh4EVGV4dAUZS0NHIENvbGxlZ2Ugb2YgVGVjaG5vbG9neWRkAgcPDxYCHgdWaXNpYmxlaGRkAgkPDxYCHwFoZGQCDw8PFgIfAWhkZAIRDw8WA';
+
+  final request = http.Request('POST', Uri.parse(url))
+    ..headers.addAll(headers)
+    ..body = body;
+
+  final streamedResponse = await request.send().timeout(const Duration(seconds: 60));
+
+  if (streamedResponse.statusCode == 200) {
+    final data = <Map<String, List<Map<String, String>>>>[];
+    await for (var chunk in streamedResponse.stream.transform(utf8.decoder)) {
+      final document = parser.parse(chunk);
+      final rows = document.querySelectorAll('tr');
+      for (var row in rows) {
+  final cells = row.querySelectorAll('td');
+  if (cells.length > 0 && cells[0].classes.contains('s0s1')) {
+    data.add({cells[0].text: []});
+  } else if (cells.length > 0) {
+    var lastSemester = data.last.keys.first;
+   if (data.isNotEmpty) {
+  var lastSemester = data.last.keys.first;
+      data.last[lastSemester]?.add({cells[0].text: cells[1].text});
+    }
+    data.last[lastSemester]?.add({cells[0].text: cells[1].text});
+  }
+}
+    }
+    debugPrint(data.toString());
+    return data;
+  } else {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Server is Busy'),
+          content: Text('Try Again later'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+    throw Exception('Failed to load marks');
+  }
+}
+
+
+
+
+
 Widget cardWidget(String title,double percentage, Widget routeBuilder) {
   return InkWell(
      onTap: () {
@@ -119,6 +207,7 @@ Widget build(BuildContext context) {
     IconButton(
       icon: Icon(Icons.refresh), // reload button
       onPressed: () {
+        
         // Add your reload function here
       },
     ),
