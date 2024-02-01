@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
 import 'package:kcg_app/dashboard.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MarksDisplay extends StatefulWidget {
   final String exam_name;
@@ -31,7 +34,20 @@ class _MarksDisplayState extends State<MarksDisplay> {
       }
     });
   }
-Widget cardWidget(String title,double percentage) {
+
+Future<List<List<dynamic>>> _fetchData() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? jsonData = prefs.getString('data');
+  if (jsonData == null || jsonData.isEmpty || jsonData == '' || jsonData == '[]') {
+   Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+    return [[]];
+  } else {
+    return (jsonDecode(jsonData) as List).cast<List<dynamic>>();
+  }
+}
+
+
+Widget cardWidget(String title,double percentage, String status) {
   return InkWell(
 // Set the height as needed
       child: Card(
@@ -163,8 +179,59 @@ Widget cardWidget(String title,double percentage) {
 Widget build(BuildContext context) {
   double hlen = MediaQuery.of(context).size.height;
   double wlen = MediaQuery.of(context).size.width;
-  return Scaffold(
-    appBar: AppBar(
+  return FutureBuilder<List<List<dynamic>>>(
+    future: _fetchData(),
+    builder: (BuildContext context, AsyncSnapshot<List<List<dynamic>>> snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Scaffold(body: Center(child: CircularProgressIndicator()));
+      } else if (snapshot.hasError) {
+        return Scaffold(body: Center(child: Text('Error: ${snapshot.error}')));
+      } else {
+        List<List<dynamic>> data = snapshot.data!;
+        List<double> percentage = [];
+List<String> titles = [];
+List<String> status = [];
+
+
+for (var semesterData in data) {
+  if (semesterData.length > 1 && semesterData[1] is List) {
+    String fullTitle = semesterData[0] as String;
+    String modifiedTitle = fullTitle.replaceAll('Semester', 'Sem');
+
+    // Only process this semesterData if it matches widget.exam_name
+    if (modifiedTitle == widget.exam_name) {
+      List<dynamic> values = semesterData[1] as List<dynamic>;
+      for (var element in values) {
+        if (element is List && element.length > 2) {
+          String value = element[2].toString();
+          double? number;
+          if (value == "Absent") {
+            number = 0.0;
+          } else {
+            number = double.tryParse(value);
+          }
+          if (number != null) {
+            percentage.add(number);
+          }
+
+          String? title = element[1].toString();
+          if (title != null) {
+            titles.add(title);
+          }
+          String? statu = element[1].toString();
+          if (title != null) {
+            status.add(statu);
+          }
+        }
+      }
+    }
+  }
+}
+
+int count = titles.length;
+
+        return Scaffold(
+          appBar: AppBar(
   leading: IconButton(
     icon: Icon(Icons.arrow_back), // back button
     onPressed: () {
@@ -244,16 +311,13 @@ Widget build(BuildContext context) {
                         crossAxisCount: 1, // number of items per row
                         childAspectRatio: 3.3, //// item width and height ratio
                       ),
-                      itemCount: 4, // number of items
+                      itemCount: count, // number of items
                       itemBuilder: (context, index) {
-                        // Define your data
-                        List<double> percentage = [90, 80, 70, 20];
-                        List<String> titles = ['Engineering Chemistry/Labrotory', 'CAT 2', 'CAT 3', 'CAT 4'];
-
                         // Pass the data to the cardWidget function
                         return cardWidget(
                           titles[index],
                           percentage[index],
+                          status[index],
                         );
                       },
                     ),
@@ -343,5 +407,9 @@ Widget build(BuildContext context) {
       ],
     ),
   );
+}
+    },
+  );
+
 }
 }
