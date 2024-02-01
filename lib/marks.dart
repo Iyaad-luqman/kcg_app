@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:kcg_app/dashboard.dart';
 import 'dart:ui';
@@ -9,6 +11,7 @@ import 'dart:convert';
 import 'package:html/parser.dart' as parser;
 import 'package:html/dom.dart' as dom;
 import 'package:kcg_app/marks_display.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Marks extends StatefulWidget {
@@ -18,7 +21,7 @@ class Marks extends StatefulWidget {
 
 class _MarksState extends State<Marks> {
   int _selectedIndex = -1;
-  Future<List<Map<String, List<Map<String, String>>>>>? _marksFuture;
+  Future<List<List<dynamic>>>? _marksFuture;
 
   Future<String> _getSessionId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -41,28 +44,32 @@ class _MarksState extends State<Marks> {
     }
   }
 
-  void initState() {
-    super.initState();
 
-    SharedPreferences.getInstance().then((prefs) {
-      // Get jsonData from shared preferences
-      String? jsonData = prefs.getString('data');
+@override
+void initState() {
+  super.initState();
+  // clearSharedPreferences().then((value) => print('Cleared shared preferences'));
+  _marksFuture = _fetchData();
+}
 
-      // Convert jsonData back to its original form
-      List<dynamic>? data = jsonData != null ? jsonDecode(jsonData) : null;
-      if (data == null) {
-        // If data is not null, set _marksFuture to null
-        _marksFuture = null;
 
-        _getSessionId().then((sessionId) {
-          _getRedirectUrl().then((redirectUrl) {
-            _marksFuture = fetchMarks(redirectUrl, sessionId)
-                as Future<List<Map<String, List<Map<String, String>>>>>?;
-          });
-        });
-      }
-    });
+Future<void> clearSharedPreferences() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.clear();
+}
+Future<List<List<dynamic>>> _fetchData() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? jsonData = prefs.getString('data');
+  if (jsonData == null || jsonData.isEmpty || jsonData == '' || jsonData == '[]') {
+    String sessionId = await _getSessionId();
+    String redirectUrl = await _getRedirectUrl();
+    return await fetchMarks(redirectUrl, sessionId);
+  } else {
+    return (jsonDecode(jsonData) as List).cast<List<dynamic>>();
   }
+}
+
+
 
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Home Page'),
@@ -81,11 +88,12 @@ class _MarksState extends State<Marks> {
     });
   }
 
-  Future fetchMarks(String redirectUrl, String sessionId) async {
+
+  Future <List<List<dynamic>>> fetchMarks(String redirectUrl, String sessionId) async {
     final url =
-        'http://192.168.1.5:5000/index.html?app=$redirectUrl&Type=$sessionId';
+        'http://192.168.1.6:3000/index.html';
     final headers = {
-      'Host': '192.168.1.5:5000',
+      'Host': '192.168.1.6:3000',
       'Content-Type': 'application/x-www-form-urlencoded',
       'Cookie': 'ASP.NET_SessionId=$sessionId',
     };
@@ -142,7 +150,7 @@ class _MarksState extends State<Marks> {
       // Store jsonData in shared preferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('data', jsonData);
-      // return data;
+      return data;
     } else {
       showDialog(
         context: context,
@@ -244,15 +252,26 @@ class _MarksState extends State<Marks> {
     double hlen = MediaQuery.of(context).size.height;
     double wlen = MediaQuery.of(context).size.width;
 
-    return FutureBuilder(
-      future: SharedPreferences.getInstance(),
-      builder:
-          (BuildContext context, AsyncSnapshot<SharedPreferences> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          // SharedPreferences is ready, you can fetch the data here
-          String? jsonData = snapshot.data?.getString('data');
-          List<dynamic>? data = jsonData != null ? jsonDecode(jsonData) : null;
-          List<String> titles = data!.map((semesterData) {
+   return FutureBuilder<List<List<dynamic>>>(
+  future: _marksFuture,
+  builder: (BuildContext context, AsyncSnapshot<List<List<dynamic>>> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return Scaffold(
+    body: Center(
+      child: LoadingAnimationWidget.dotsTriangle(
+
+        color: Colors.white,
+        size: 200,
+      ),
+    ),); // Show a loading spinner while waiting for _marksFuture to complete
+    } else if (snapshot.hasError) {
+      return Text('Error: ${snapshot.error}'); // Show an error message if there's an error loading _marksFuture
+    } else {
+      if (snapshot.data == null || snapshot.data!.isEmpty) {
+  return Text('No data'); // Show a message if the data is empty
+} else {
+          List<List<dynamic>> data = snapshot.data!;
+          List<String> titles = data.map((semesterData) {
             String fullTitle = semesterData[0] as String;
             String modifiedTitle = fullTitle.replaceAll('Semester', 'Sem');
             return modifiedTitle;
@@ -265,11 +284,10 @@ class _MarksState extends State<Marks> {
       List<double> numericValues = [];
       for (var element in values) {
         if (element is List && element.length > 2) {
-          try {
-            double number = double.parse(element[2].toString());
+          String value = element[2].toString();
+          double? number = double.tryParse(value);
+          if (number != null) {
             numericValues.add(number);
-          } catch (e) {
-            // Skip the element if it's not a number
           }
         }
       }
@@ -280,7 +298,6 @@ class _MarksState extends State<Marks> {
       return 0.0; // Return a default value if semesterData has less than 2 elements or semesterData[1] is not a list
     }
   }).toList();
-
 List<Widget> routes = titles.map((title) {
   return MarksDisplay(exam_name: title);
 }).toList();
@@ -499,12 +516,8 @@ List<Widget> routes = titles.map((title) {
               ],
             ),
           );
-        } else {
-          // SharedPreferences is not ready, show a loading indicator
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+        } 
+    }
       },
     );
   }
