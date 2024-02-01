@@ -26,6 +26,25 @@ class _DashboardState extends State<Dashboard> {
     Text('Profile Page'),
   ];
 
+
+String? name;
+String? semester;
+
+@override
+void initState() {
+  super.initState();
+  _loadNameAndSemester();
+}
+
+void _loadNameAndSemester() async {
+  final prefs = await SharedPreferences.getInstance();
+  setState(() {
+    name = prefs.getString('name');
+    semester = prefs.getString('semno');
+  });
+}
+
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -74,6 +93,7 @@ Navigator.push(context, MaterialPageRoute(builder: (context) => routeBuilder));
 Widget build(BuildContext context) {
   double hlen = MediaQuery.of(context).size.height;
   double wlen = MediaQuery.of(context).size.width;
+
   return Scaffold(
     body: Stack(
       children: [
@@ -97,7 +117,8 @@ Widget build(BuildContext context) {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 30, 0, 5),
                     child: Text(
-                      'Welcome, Student',
+                      // 'Welcome, $name',
+                      'Welcome, Iyaad Luqman K',
                       style: TextStyle(fontSize: 23, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -111,6 +132,7 @@ Widget build(BuildContext context) {
                         padding: const EdgeInsets.fromLTRB(10,0,0,0),
                         child: Text(
                           '1st Semester',
+                          // '$semester' ,
                           style: TextStyle(fontSize: 16, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
                         ),
                                          ),

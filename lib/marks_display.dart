@@ -47,7 +47,7 @@ Future<List<List<dynamic>>> _fetchData() async {
 }
 
 
-Widget cardWidget(String title,double percentage, String status) {
+Widget cardWidget(String title,double percentage) {
   return InkWell(
 // Set the height as needed
       child: Card(
@@ -91,7 +91,7 @@ Widget cardWidget(String title,double percentage, String status) {
                   height: 10,
                 ),
                 Text(
-                  '${percentage.toStringAsFixed(0)}', // display the percentage
+                  '${percentage == -100 ? 0 : percentage.toStringAsFixed(0)}',// display the percentage
                   style: TextStyle(
                     fontFamily: 'Manrope',
                     fontSize: 18, // adjust the font size as needed
@@ -134,7 +134,7 @@ Widget cardWidget(String title,double percentage, String status) {
             Row(
               children: [
                 Text(
-                  percentage < 50 ? 'FAIL' : 'PASS',
+                  percentage < 0 ? 'ABSENT' : (percentage < 50 ? 'FAIL' : 'PASS'),
                   style: TextStyle(
                     fontFamily: 'QuickSand',
                     fontSize: 13, // make the text smaller
@@ -190,7 +190,6 @@ Widget build(BuildContext context) {
         List<List<dynamic>> data = snapshot.data!;
         List<double> percentage = [];
 List<String> titles = [];
-List<String> status = [];
 
 
 for (var semesterData in data) {
@@ -206,7 +205,7 @@ for (var semesterData in data) {
           String value = element[2].toString();
           double? number;
           if (value == "Absent") {
-            number = 0.0;
+            number = -100;
           } else {
             number = double.tryParse(value);
           }
@@ -218,10 +217,7 @@ for (var semesterData in data) {
           if (title != null) {
             titles.add(title);
           }
-          String? statu = element[1].toString();
-          if (title != null) {
-            status.add(statu);
-          }
+         
         }
       }
     }
@@ -239,16 +235,12 @@ int count = titles.length;
     },
   ),
   title: Center(
-    child: Text('${widget.exam_name} Results'), // replace 'Marks' with your desired title
+    child: Padding(
+  padding: EdgeInsets.only(right: 50.0), // Adjust the value as needed
+  child: Text('${widget.exam_name} Results'),
+), // replace 'Marks' with your desired title
   ),
-  actions: [
-    IconButton(
-      icon: Icon(Icons.refresh), // reload button
-      onPressed: () {
-        // Add your reload function here
-      },
-    ),
-  ],
+
   backgroundColor: Colors.transparent,
   elevation: 0,
   flexibleSpace: ClipRRect(
@@ -317,7 +309,6 @@ int count = titles.length;
                         return cardWidget(
                           titles[index],
                           percentage[index],
-                          status[index],
                         );
                       },
                     ),
