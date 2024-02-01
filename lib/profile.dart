@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:kcg_app/dashboard.dart';
+import 'package:kcg_app/splash.dart';
 import 'package:kcg_app/timetable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -216,10 +217,11 @@ Widget build(BuildContext context) {
     onPressed: () async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.clear();
-      Navigator.pushReplacementNamed(context, '/splashscreen');
+      Navigator.push(context, MaterialPageRoute(builder: (context) => SplashScreen()));
     },
   ),
-),
+), 
+// ElevatedButton
                   // Add a GridView.builder
                   Container(
                     height: hlen * 0.7, // specify the height of the GridView
