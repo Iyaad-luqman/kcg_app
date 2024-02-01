@@ -1,26 +1,17 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:kcg_app/attendance.dart';
-import 'package:kcg_app/feedback.dart';
-import 'package:kcg_app/fees.dart';
-import 'package:kcg_app/library.dart';
-import 'package:kcg_app/marks.dart';
-import 'package:kcg_app/profile.dart';
+import 'package:kcg_app/dashboard.dart';
 import 'package:kcg_app/timetable.dart';
-import 'package:kcg_app/receipts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-class Dashboard extends StatefulWidget {
+class Profile extends StatefulWidget {
   @override
-  _DashboardState createState() => _DashboardState();
-
+  _ProfileState createState() => _ProfileState();
 }
 
-class _DashboardState extends State<Dashboard> {
-  int _selectedIndex = 0;
+class _ProfileState extends State<Profile> {
+  int _selectedIndex = 2;
 
 
 
@@ -109,6 +100,33 @@ Widget build(BuildContext context) {
   double wlen = MediaQuery.of(context).size.width;
 
   return Scaffold(
+     appBar: AppBar(
+  leading: IconButton(
+    icon: Icon(Icons.arrow_back), // back button
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  ),
+  title: Center(
+    child: Padding(
+  padding: EdgeInsets.only(right: 50.0), // Adjust the value as needed
+  child: Text('Profile'),
+), // replace 'Marks' with your desired title
+  ),
+
+  backgroundColor: Colors.transparent,
+  elevation: 0,
+  flexibleSpace: ClipRRect(
+    child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 90, sigmaY: 130),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 31, 0, 102).withOpacity(0),
+        ),
+      ),
+    ),
+  ),
+),
     body: Stack(
       children: [
         Container(
@@ -125,33 +143,83 @@ Widget build(BuildContext context) {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+
                   SizedBox(
-                    height: 20,
+                    height: 80,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 30, 0, 5),
-                    child: Text(
-                      // 'Welcome, $name',
-                      'Welcome, Iyaad Luqman K',
-                      style: TextStyle(fontSize: 23, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                   Row(
-                     children: [
-                      SizedBox(
-                        width: 20,
+
+                  Center(
+                    
+                      child: ClipOval(
+                    child: Image.asset('images/avatar.png', width: 180, height: 170,),
                       ),
-                       Image.asset('images/cap.png', width: 40, height: 40,),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10,0,0,0),
-                        child: Text(
-                          '1st Semester',
-                          // '$semester' ,
-                          style: TextStyle(fontSize: 16, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
-                        ),
-                                         ),
-                     ],
-                   ),
+                  ),
+                  
+                  SizedBox(
+                    height: 50,
+                  ),
+                    Center(
+                      child: Text(
+                        // 'Welcome, $name',
+                        'Iyaad Luqman K',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 23, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(
+                    height: 15,
+                  ),
+                                        Center(
+                      child: Text(
+                        // 'Welcome, $name',
+                        'Regno: 9123104070',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 23, fontFamily: 'Manrope', fontWeight: FontWeight.w100),
+                      ),
+                    ),
+                                       SizedBox(
+                    height: 15,
+                  ),
+                                                          Center(
+                      child: Text(
+                        // 'Welcome, $name',
+                        'Batch: 2023',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 23, fontFamily: 'Manrope', fontWeight: FontWeight.w100),
+                      ),
+                    ),
+                                       SizedBox(
+                    height: 15,
+                  ),
+                    Center(
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: wlen * 0.26,
+                          ),
+                          Image.asset('images/cap.png', width: 40, height: 40,),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(10,0,0,0),
+                            child: Text(
+                              '1st Semester',
+                              // '$semester' ,
+                              style: TextStyle(fontSize: 16, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                   Center(
+  child: ElevatedButton.icon(
+    icon: Icon(Icons.logout), 
+    label: Text('Logout'),
+    onPressed: () async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+      Navigator.pushReplacementNamed(context, '/splashscreen');
+    },
+  ),
+),
                   // Add a GridView.builder
                   Container(
                     height: hlen * 0.7, // specify the height of the GridView
@@ -162,16 +230,16 @@ Widget build(BuildContext context) {
                       itemCount: 6, // number of items
                       itemBuilder: (context, index) {
                         // Define your data
-                        List<String> icons = ['images/attendance.png' ,'images/fees.png', 'images/marks.png' ,'images/library.png' ,'images/feedback.png' , 'images/reciept.png'];
-                        List<String> titles = ['Attendance', 'Fees', 'Exam Results', 'Library', 'FeedBack', 'Receipts'];
-                        List<Widget> routes = [Attendance(), Fees(), Marks(), Library(), FeedBack(), Receipts()];
+                        // List<String> icons = ['images/attendance.png' ,'images/fees.png', 'images/marks.png' ,'images/library.png' ,'images/feedback.png' , 'images/reciept.png'];
+                        // List<String> titles = ['Attendance', 'Fees', 'Exam Results', 'Library', 'FeedBack', 'Receipts'];
+                        // List<Widget> routes = [Attendance(), Fees(), Marks(), Library(), FeedBack(), Receipts()];
 
                         // Pass the data to the cardWidget function
-                        return cardWidget(
-                          titles[index],
-                          icons[index],
-                          routes[index],
-                        );
+                        // return cardWidget(
+                        //   titles[index],
+                        //   icons[index],
+                        //   routes[index],
+                        // );
                       },
                     ),
                   ),
