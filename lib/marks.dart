@@ -319,7 +319,18 @@ List<Widget> routes = titles.map((title) {
                 IconButton(
                   icon: Icon(Icons.refresh), // reload button
                   onPressed: () {
-                    // Add your reload function here
+                  _getSessionId().then((sessionId) {
+                    _getRedirectUrl().then((redirectUrl) {
+                      fetchMarks(redirectUrl, sessionId).then((marks) {
+                        setState(() {
+                          _marksFuture = Future.value(marks);
+                        });
+                        
+                        // Do something with marks
+                        // return marks; // Can't return from void function
+                      });
+                    });
+                  });
                   },
                 ),
               ],
