@@ -91,7 +91,8 @@ Future<List<List<dynamic>>> _fetchData() async {
 
   Future <List<List<dynamic>>> fetchMarks(String redirectUrl, String sessionId) async {
     final url =
-        'http://192.168.1.6:3000/index.html';
+        'http://studentlogin.kcgcollege.ac.in$redirectUrl';
+        debugPrint('url: $url');
     final headers = {
       'Host': '192.168.1.6:3000',
       'Content-Type': 'application/x-www-form-urlencoded',
