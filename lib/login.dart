@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -43,13 +44,13 @@ Future login(String username, String password) async {
   final name = RegExp(r'<span id="lblsname" class="ddl-lbl" style="">([^<]+)</span>').firstMatch(response2.body)?.group(1);
   await prefs.setString('name', name!);
   final regno = RegExp(r'<span id="Label15" class="ddl-lbl" style="">([^<]+)</span>').firstMatch(response2.body)?.group(1);
-  await prefs.setString('name', regno!);
+  await prefs.setString('regno', regno!);
   final depno = RegExp(r'<span id="lbldegree" class="ddl-lbl" style="">([^<]+)</span>').firstMatch(response2.body)?.group(1);
-  await prefs.setString('name', depno!);
+  await prefs.setString('depno', depno!);
   final semno = RegExp(r'<span id="lblsem" class="ddl-lbl" style="">([^<]+)</span>').firstMatch(response2.body)?.group(1);
-  await prefs.setString('name', semno!);
+  await prefs.setString('semno', semno!);
   final batchyr = RegExp(r'<span id="lblyear" class="ddl-lbl" style="">([^<]+)</span>').firstMatch(response2.body)?.group(1);
-  await prefs.setString('name', batchyr!);
+  await prefs.setString('batchyr', batchyr!);
   
 
   debugPrint('NAMMEEE -----------------> >>> > > > > > >> > >  > > > $name');
@@ -100,6 +101,8 @@ Future login(String username, String password) async {
                 margin: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.2),
                 child: Image.asset('images/logo.png'),
+                width: 100,
+                height: 100,
               ),
               SizedBox(
                 height: 50,
@@ -218,6 +221,10 @@ Future login(String username, String password) async {
                   ),
                 ),
               ),
+              SizedBox(
+                height: hlen * 0.3,
+              
+              )
             ],
           ),
         ),

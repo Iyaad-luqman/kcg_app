@@ -22,6 +22,10 @@ class _ProfileState extends State<Profile> {
 
   String? name;
   String? semester;
+  String? regno;
+  String? batchyr;
+  String? depno;
+
 
   @override
   void initState() {
@@ -34,6 +38,9 @@ class _ProfileState extends State<Profile> {
     setState(() {
       name = prefs.getString('name');
       semester = prefs.getString('semno');
+      regno = prefs.getString('regno');
+      batchyr = prefs.getString('batchyr');
+      depno =   prefs.getString('depno');
     });
   }
 
@@ -167,8 +174,8 @@ class _ProfileState extends State<Profile> {
                     ),
                     Center(
                       child: Text(
-                        // 'Welcome, $name',
-                        'Iyaad Luqman K',
+                        '$name',
+                        // 'Iyaad Luqman K',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 23,
@@ -182,7 +189,7 @@ class _ProfileState extends State<Profile> {
                     Center(
                       child: Text(
                         // 'Welcome, $name',
-                        'Regno: 9123104070',
+                        'Regno: ${regno}',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 23,
@@ -196,7 +203,7 @@ class _ProfileState extends State<Profile> {
                     Center(
                       child: Text(
                         // 'Welcome, $name',
-                        'Batch: 2023',
+                        'Batch: ${batchyr}',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 23,
@@ -221,7 +228,7 @@ class _ProfileState extends State<Profile> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                             child: Text(
-                              '1st Semester',
+                              '${semester}st Semester',
                               // '$semester' ,
                               style: TextStyle(
                                   fontSize: 16,

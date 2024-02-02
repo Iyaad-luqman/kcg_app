@@ -131,8 +131,8 @@ Widget build(BuildContext context) {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 30, 0, 5),
                     child: Text(
-                      // 'Welcome, $name',
-                      'Welcome, Iyaad Luqman K',
+                      'Welcome, $name',
+                      // 'Welcome, Iyaad Luqman K',
                       style: TextStyle(fontSize: 23, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -145,8 +145,8 @@ Widget build(BuildContext context) {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(10,0,0,0),
                         child: Text(
-                          '1st Semester',
-                          // '$semester' ,
+                          // '1st Semester',
+                          '${semester}st Semester' ,
                           style: TextStyle(fontSize: 16, fontFamily: 'Manrope', fontWeight: FontWeight.bold),
                         ),
                                          ),
