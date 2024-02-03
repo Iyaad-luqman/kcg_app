@@ -375,7 +375,8 @@ List<Widget> routes = titles.map((title) {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  child: SingleChildScrollView(
+                ),
+                  SingleChildScrollView(
                     child: SafeArea(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -441,7 +442,6 @@ List<Widget> routes = titles.map((title) {
                       ),
                     ),
                   ),
-                ),
                 Positioned(
                   bottom: 0,
                   left: 0,
