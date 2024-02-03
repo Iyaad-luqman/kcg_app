@@ -19,9 +19,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _dob_controller = TextEditingController();
 
 Future login(String username, String password) async {
+  try{
    final prefs = await SharedPreferences.getInstance();
-  final url = 'http://studentlogin.kcgcollege.ac.in';
+  final url = 'http://studentlogin.kcgcollege.ac.in/';
   final headers = {
+    'Host': 'studentlogin.kcgcollege.ac.in',
     'Content-Type': 'application/x-www-form-urlencoded',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.71 Safari/537.36',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -77,6 +79,33 @@ Future login(String username, String password) async {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
   }
 
+} catch (e) {
+  print(e);
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Server is Down'),
+        content: Text('Try again later'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+}
+}
+
+  @override
+  void dispose() {
+    _regsiter_controller.dispose();
+    _dob_controller.dispose();
+    super.dispose();
 }
 
   @override
