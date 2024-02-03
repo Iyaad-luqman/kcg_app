@@ -102,7 +102,7 @@ Widget cardWidget(String title,int percentage) {
 Widget build(BuildContext context) {
   double hlen = MediaQuery.of(context).size.height;
   double wlen = MediaQuery.of(context).size.width;
-    double percentage  = 89.0;
+    double percentage  = 78.0;
   return Scaffold(
     appBar: AppBar(
   leading: IconButton(
@@ -246,8 +246,25 @@ Widget build(BuildContext context) {
 
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: percentage > 75 ? Icon(Icons.check_circle, color: Colors.green, size: 20,) :  Icon(Icons.cancel, color: Colors.red, size: 20,),
-                  ),
+                    child: 
+                    percentage <= 75
+                  ? Icon(
+                      Icons.cancel,
+                      color: Colors.red,
+                      size: 15,
+                    )
+                  : percentage <= 82
+                      ? Icon(
+                          Icons.error,
+                          color: Colors.orange,
+                          size: 15,
+                        )
+                  : Icon(
+                      Icons.check_circle,
+                      color: Colors.green,
+                      size: 15,
+                    ),
+                    ),
                 ],
               ), 
               Padding(
@@ -255,7 +272,7 @@ Widget build(BuildContext context) {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'No. of leaves you can take in this sem: 7', // display the percentage
+                    'Your attendance is very low for this subject, You cannot miss more classes', // display the percentage
                     style: TextStyle(
                       fontFamily: 'QuickSand',
                       fontSize: 15, // make the text bigger
@@ -282,7 +299,7 @@ Widget build(BuildContext context) {
                       itemCount: 4, // number of items
                       itemBuilder: (context, index) {
                         // Define your data
-                        List<int> percentage = [90, 80, 70, 20];
+                        List<int> percentage = [90, 62, 8, 20];
                         List<String> titles = ['Total Classes: ', 'Attended Classes: ', 'Missed Classes:', 'Remaining Classes: '];
 
                         // Pass the data to the cardWidget function

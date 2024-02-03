@@ -142,7 +142,7 @@ Widget cardWidget(String title,double percentage) {
                 ),
                 SizedBox(
                   width: 5,),
-                percentage <= 50
+                percentage < 50
                   ? Icon(
                       Icons.cancel,
                       color: Colors.red,

@@ -70,7 +70,7 @@ Widget cardWidget(String title,double percentage ,Widget routeBuilder) {
                 value: percentage / 100, // calculate the progress
                 backgroundColor: Colors.grey,
                 valueColor: AlwaysStoppedAnimation(
-                  percentage < 75 ? Colors.red : Color.fromARGB(255, 0, 162, 255), // set the color based on the percentage
+                  percentage < 75 ? Colors.red : percentage < 82 ? Colors.orange : Color.fromARGB(255, 0, 162, 255) // set the color based on the percentage
                 ),
               ),
             ),
@@ -137,6 +137,12 @@ Widget cardWidget(String title,double percentage ,Widget routeBuilder) {
                       color: Colors.red,
                       size: 15,
                     )
+                  : percentage <= 82
+                      ? Icon(
+                          Icons.error,
+                          color: Colors.orange,
+                          size: 15,
+                        )
                   : Icon(
                       Icons.check_circle,
                       color: Colors.green,
@@ -268,18 +274,18 @@ Widget build(BuildContext context) {
                    ),
                   // Add a GridView.builder
                   Container(
-                    height: hlen * 0.7, // specify the height of the GridView
+                    height: hlen * 0.58, // specify the height of the GridView
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 1, // number of items per row
                         childAspectRatio: 3.3, // item width and height ratio
                       ),
-                      itemCount: 4, // number of items
+                      itemCount: 6, // number of items
                       itemBuilder: (context, index) {
                         // Define your data
-                        List<double> percentage = [90, 80, 70, 20];
-                        List<String> titles = ['Engineering Chemistry/Labrotory', 'CAT 2', 'CAT 3', 'CAT 4'];
-                        List<Widget> routes = [AttendanceDisplay(index: 1), AttendanceDisplay(index: 2), AttendanceDisplay(index: 3), AttendanceDisplay(index: 4)];
+                        List<double> percentage = [98, 96, 92, 89, 85, 78];
+                        List<String> titles = ['Programming in C', 'Enginering Chemistry', 'Essential Communication', 'Heritage of Tamil', 'Engineering Physics', 'Matrices and Calculus'] ;
+                        List<Widget> routes = [AttendanceDisplay(index: 1), AttendanceDisplay(index: 2), AttendanceDisplay(index: 3), AttendanceDisplay(index: 4), AttendanceDisplay(index: 5), AttendanceDisplay(index: 6)];
 
                         // Pass the data to the cardWidget function
                         return cardWidget(
