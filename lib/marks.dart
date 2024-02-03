@@ -11,6 +11,8 @@ import 'dart:convert';
 import 'package:html/parser.dart' as parser;
 import 'package:html/dom.dart' as dom;
 import 'package:kcg_app/marks_display.dart';
+import 'package:kcg_app/profile.dart';
+import 'package:kcg_app/timetable.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -86,7 +88,6 @@ Future<List<List<dynamic>>> _fetchData() async {
     Text('Search Page'),
     Text('Profile Page'),
   ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -95,9 +96,16 @@ Future<List<List<dynamic>>> _fetchData() async {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Dashboard()));
       }
+      if (index == 1) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Timetable()));
+      }
+      if (index == 2) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Profile()));
+      }
     });
   }
-
 
   Future<List<List<dynamic>>> fetchMarks(String redirectUrl, String sessionId) async {
     final url = 'http://studentlogin.kcgcollege.ac.in$redirectUrl';

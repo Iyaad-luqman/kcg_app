@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:kcg_app/attendance_display.dart';
 import 'package:kcg_app/dashboard.dart';
 import 'package:kcg_app/circ.dart';
+import 'package:kcg_app/profile.dart';
+import 'package:kcg_app/timetable.dart';
 
 class Attendance extends StatefulWidget {
   @override
@@ -19,13 +21,21 @@ class _AttendanceState extends State<Attendance> {
     Text('Search Page'),
     Text('Profile Page'),
   ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
 
-      if(index == 0){
-         Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+      if (index == 0) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Dashboard()));
+      }
+      if (index == 1) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Timetable()));
+      }
+      if (index == 2) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Profile()));
       }
     });
   }

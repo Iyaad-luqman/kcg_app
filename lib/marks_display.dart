@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 
 import 'package:kcg_app/dashboard.dart';
+import 'package:kcg_app/profile.dart';
+import 'package:kcg_app/timetable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MarksDisplay extends StatefulWidget {
@@ -29,8 +31,17 @@ class _MarksDisplayState extends State<MarksDisplay> {
     setState(() {
       _selectedIndex = index;
 
-      if(index == 0){
-         Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+      if (index == 0) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Dashboard()));
+      }
+      if (index == 1) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Timetable()));
+      }
+      if (index == 2) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Profile()));
       }
     });
   }

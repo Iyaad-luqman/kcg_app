@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:kcg_app/dashboard.dart';
 import 'package:kcg_app/circ.dart';
+import 'package:kcg_app/profile.dart';
+import 'package:kcg_app/timetable.dart';
 
 
 class AttendanceDisplay extends StatefulWidget {
@@ -24,12 +26,21 @@ class _AttendanceDisplayState extends State<AttendanceDisplay> {
     Text('Profile Page'),
   ];
 
-  void _onItemTapped(int index) {
+    void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
 
-      if(index == 0){
-         Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+      if (index == 0) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Dashboard()));
+      }
+      if (index == 1) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Timetable()));
+      }
+      if (index == 2) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Profile()));
       }
     });
   }
