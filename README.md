@@ -6,14 +6,26 @@ Welcome to the  College Student Dashboard repository! This app serves as a compr
 
 This app is designed to enhance the academic experience of KCG college students by providing easy access to various functionalities such as checking marks, attendance records, fee status, library details, and providing feedback. It aims to streamline processes and improve accessibility for students.
 
-## Screenshots: 
-![IMG-20240509-WA0007](https://github.com/Iyaad-luqman/kcg_app/assets/86549899/ad121230-3e30-478e-8a19-7b58966bc33e)
-![IMG-20240509-WA0004](https://github.com/Iyaad-luqman/kcg_app/assets/86549899/be28f675-53ac-4404-aae3-60eb93cb82e9)
-![IMG-20240509-WA0002](https://github.com/Iyaad-luqman/kcg_app/assets/86549899/d299ffd1-dcbd-4505-802f-c577f817bff8)
-![IMG-20240509-WA0005](https://github.com/Iyaad-luqman/kcg_app/assets/86549899/3f04a0fa-5c5c-4069-ab7c-e1a825d82e66)
-![IMG-20240509-WA0003](https://github.com/Iyaad-luqman/kcg_app/assets/86549899/e4542631-c3bb-45a9-af09-437faa219eac)
-![IMG-20240509-WA0006](https://github.com/Iyaad-luqman/kcg_app/assets/86549899/e313a9b2-2003-4f4f-a593-b96a25804856)
-![IMG-20240509-WA0001](https://github.com/Iyaad-luqman/kcg_app/assets/86549899/b6ed66e7-92c3-432a-b0c5-a381e54864fc)
+## Screenshots
+
+<div align="center">
+  <img src="https://github.com/Iyaad-luqman/kcg_app/assets/86549899/ad121230-3e30-478e-8a19-7b58966bc33e" width="200" />
+  <img src="https://github.com/Iyaad-luqman/kcg_app/assets/86549899/be28f675-53ac-4404-aae3-60eb93cb82e9" width="200" />
+</div>
+
+<div align="center">
+  <img src="https://github.com/Iyaad-luqman/kcg_app/assets/86549899/d299ffd1-dcbd-4505-802f-c577f817bff8" width="200" />
+  <img src="https://github.com/Iyaad-luqman/kcg_app/assets/86549899/3f04a0fa-5c5c-4069-ab7c-e1a825d82e66" width="200" />
+</div>
+
+<div align="center">
+  <img src="https://github.com/Iyaad-luqman/kcg_app/assets/86549899/e4542631-c3bb-45a9-af09-437faa219eac" width="200" />
+  <img src="https://github.com/Iyaad-luqman/kcg_app/assets/86549899/e313a9b2-2003-4f4f-a593-b96a25804856" width="200" />
+</div>
+
+<div align="center">
+  <img src="https://github.com/Iyaad-luqman/kcg_app/assets/86549899/b6ed66e7-92c3-432a-b0c5-a381e54864fc" width="200" />
+</div>
 
 
 ## Advantages Over the Official ERP
