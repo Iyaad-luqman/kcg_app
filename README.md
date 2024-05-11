@@ -1,6 +1,6 @@
 # College Student Dashboard
 
-Welcome to the  College Student Dashboard repository! This app serves as a comprehensive platform for KCG college students, offering convenient access to essential information and services in one place.
+Welcome to the  College Student Dashboard repository! This app serves as a comprehensive platform for college students, offering convenient access to essential information and services in one place.
 
 ## Overview
 
